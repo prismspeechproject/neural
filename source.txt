@@ -1,0 +1,16 @@
+source File :
+  https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6
+
+  https://www.youtube.com/watch?v=aircAruvnKk
+
+  https://www.amazon.com/gp/offer-listing/1789138906/ref=olp_f_new?ie=UTF8&f_new=true
+
+
+  https://gist.github.com/jamesloyys/796ad704748174da94e313097042e04c#file-neural_network_init-py
+
+
+https://github.com/jamesloyys
+
+
+https://github.com/PacktPublishing/Neural-Network-Projects-with-Python
+
