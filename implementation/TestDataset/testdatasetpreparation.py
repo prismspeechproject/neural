@@ -44,7 +44,7 @@ def preprocessing_data_hin(w):
     w = re.sub(r'[२३०८१५७९४६]', ' ', w)
     w = w.strip()
 
-    #w = '<start> ' + w + ' <end>'
+    w = '<start> ' + w + ' <end>'
     return w
 
 def preprocessing_data_eng(w):
@@ -56,7 +56,7 @@ def preprocessing_data_eng(w):
 
     w = w.strip()
 
-    #w = '<start> ' + w + ' <end>'
+    w = '<start> ' + w + ' <end>'
     return w
 
 def customize_dataset(df):
@@ -77,5 +77,5 @@ len_words = int(input("Enter number words : "))
 words = df[df['len_eng_words'] == len_words]
 words.head()
 
-words.to_csv('WordLenA5.csv', index=None)
+words.to_csv('WordLen3.csv', index=None)
 
