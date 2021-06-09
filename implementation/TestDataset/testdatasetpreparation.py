@@ -31,37 +31,42 @@ def create_dataset(url):
   df['len_hin_words'] = df['Hindi'].apply(lambda h: len(str(h).split(" ")))  
   return df
 
-#df = df[df['len_hin_words']<=20]
 def unicode_to_ascii(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
 
 def preprocessing_data_hin(w):
     w = unicode_to_ascii(str(w).lower().strip())
     w = re.sub(r"[\(\[].*?[\)\]]", ' ', w)
-    w = re.sub(r"([.?!,])", ' ', w)
-    w = re.sub(r'[" "]+', " ", w)
-    #w = re.sub(r'[^a-zA-Z?.!,]', " ", w)
-    w = re.sub(r'[२३०८१५७९४६]', ' ', w)
+    w = re.sub(r"([.?!,])", r' \1 ', w)
+    w = re.sub(r'["“”‘]', " ", w)
+    w = re.sub(r'[0-9]', " ", w)
+    
     w = w.strip()
 
-    w = '<start> ' + w + ' <end>'
+    #w = '<start> ' + w + ' <end>'
     return w
 
 def preprocessing_data_eng(w):
     w = unicode_to_ascii(str(w).lower().strip())
-    w = re.sub(r"[\(\[].*?[\)\]]", ' ', w)
-    w = re.sub(r"([.?!,])", ' ', w)
-    w = re.sub(r'[" "]+', " ", w)
-    w = re.sub(r'[^a-zA-Z?.!,]', " ", w)
+    w = re.sub(r"[\(\[].*?[\)\]]", '', w)
+    w = re.sub(r"([.?!,])", r' \1 ', w)
+    w = re.sub(r'["]', " ", w)
+    w = re.sub(r'[^a-zA-Z?.!,]+', " ", w)
 
     w = w.strip()
 
-    w = '<start> ' + w + ' <end>'
     return w
 
 def customize_dataset(df):
-    df['English'] = df['English'].apply(lambda e : preprocessing_data_eng(e))
     df['Hindi'] = df['Hindi'].apply(lambda h : preprocessing_data_hin(h))
+    df['English'] = df['English'].apply(lambda e : preprocessing_data_eng(e))
+    df['Hindi'] = df['Hindi'].apply(lambda h: ''.join(c for c in h if c not in punctuations))
+    df['English'] = df['English'].apply(lambda e: ''.join(c for c in e if c not in punctuations))
+    df['English']=df['English'].apply(lambda e: e.translate(digits))
+    df['Hindi']=df['Hindi'].apply(lambda h: h.translate(digits))
+    df['Hindi']=df['Hindi'].apply(lambda h: re.sub("[a-z२३०८१५७९४६]", '', h))
+    df['English'] = df['English'].apply(lambda e : '<start> ' + e + ' <end>')
+    df['Hindi'] = df['Hindi'].apply(lambda h : '<start> ' + h + ' <end>')
 
     return df
 
@@ -77,5 +82,5 @@ len_words = int(input("Enter number words : "))
 words = df[df['len_eng_words'] == len_words]
 words.head()
 
-words.to_csv('WordLen3.csv', index=None)
+words.to_csv('WordLen5.csv', index=None)
 
